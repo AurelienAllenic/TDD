@@ -1,0 +1,8 @@
+{
+  "storage": {
+    "userTable2": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    }
+  }
+}
