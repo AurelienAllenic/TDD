@@ -2,6 +2,17 @@
   "function": {
     "postUser": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "userTable2"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
