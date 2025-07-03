@@ -1,41 +1,53 @@
 import json
+import boto3
+import uuid
+import os
+from botocore.exceptions import ClientError
 
-def handler(event, context):
-    if event.get("httpMethod") != "POST":
-        return {
-            "statusCode": 405,
-            "body": json.dumps({"error": "Méthode non autorisée"})
-        }
-
+def lambda_handler(event, context):
     try:
-        body = json.loads(event.get("body", "{}"))
-        username = body.get("username")
-        email = body.get("email")
+        # Initialise le client DynamoDB à l'intérieur de la fonction
+        dynamodb = boto3.resource("dynamodb", region_name="eu-west-1")
+        table_name = os.environ.get("TABLE_NAME", "Users")
+        table = dynamodb.Table(table_name)
 
-        if not username or not email:
-            return {
-                "statusCode": 400,
-                "body": json.dumps({"error": "Champs manquants"})
-            }
+        body = json.loads(event["body"])
+        email = body["email"]
+        user_id = str(uuid.uuid4())
 
-        # Simulation de la création de l'utilisateur
-        user = {
-            "username": username,
-            "email": email
-        }
+        table.put_item(
+            Item={
+                "user_id": user_id,
+                "email": email,
+                "created_at": body.get("created_at", "2025-07-03")
+            },
+            ConditionExpression="attribute_not_exists(user_id)"
+        )
 
         return {
             "statusCode": 201,
-            "headers": {
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-            },
-            "body": json.dumps({"message": "Utilisateur créé", "user": user})
+            "body": json.dumps({"user_id": user_id, "email": email})
+        }
+
+    except ClientError as e:
+        if e.response["Error"]["Code"] == "ConditionalCheckFailedException":
+            return {
+                "statusCode": 409,
+                "body": json.dumps({"message": "User with this email already exists"})
+            }
+        return {
+            "statusCode": 500,
+            "body": json.dumps({
+                "message": "Internal server error",
+                "error": str(e)
+            })
         }
 
     except Exception as e:
         return {
-            "statusCode": 500,
-            "body": json.dumps({"error": str(e)})
+            "statusCode": 400,
+            "body": json.dumps({
+                "message": "Invalid input",
+                "error": str(e)
+            })
         }

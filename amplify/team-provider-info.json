@@ -18,7 +18,11 @@
       "function": {
         "postUser": {
           "deploymentBucketName": "amplify-tdd-dev-92181-deployment",
-          "s3Key": "amplify-builds/postUser-514839754f5648705a57-build.zip"
+          "s3Key": "amplify-builds/postUser-62667041746d4c36464e-build.zip"
+        },
+        "getUser": {
+          "deploymentBucketName": "amplify-tdd-dev-92181-deployment",
+          "s3Key": "amplify-builds/getUser-78666555414741785679-build.zip"
         }
       }
     }
