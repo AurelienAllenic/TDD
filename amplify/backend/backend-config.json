@@ -1,4 +1,29 @@
 {
+  "function": {
+    "postUser": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_postUser_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "postUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_postUser_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "postUser"
+        }
+      ]
+    }
+  },
   "storage": {
     "userTable2": {
       "providerPlugin": "awscloudformation",

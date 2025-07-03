@@ -14,6 +14,12 @@
     "categories": {
       "storage": {
         "userTable2": {}
+      },
+      "function": {
+        "postUser": {
+          "deploymentBucketName": "amplify-tdd-dev-92181-deployment",
+          "s3Key": "amplify-builds/postUser-514839754f5648705a57-build.zip"
+        }
       }
     }
   }
