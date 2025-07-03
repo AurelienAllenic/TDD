@@ -13,10 +13,8 @@ def lambda_handler(event, context):
         email = None
 
         # Cas GET avec queryStringParameters
-        if event.get("queryStringParameters") and "email" in event["queryStringParameters"]:
-            email = event["queryStringParameters"]["email"]
         # (optionnel) Cas POST avec body JSON
-        elif event.get("body"):
+        if event.get("body"):
             try:
                 body = json.loads(event["body"])
                 email = body.get("email")
